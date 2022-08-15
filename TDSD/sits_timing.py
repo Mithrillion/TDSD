@@ -1,3 +1,5 @@
+# evalutes the run time of TD-PCA SigDist on the SITS dataset
+
 import os
 import numpy as np
 import pandas as pd
@@ -28,7 +30,7 @@ dataset_list = sorted(
     ]
 )
 
-dataset_name = dataset_list[5]
+dataset_name = dataset_list[5]  # can choose an arbitrary fold - does not affect run time
 
 train = pd.read_csv(
     f"{DATASET_ROOT}/{dataset_name}/{dataset_name}_TRAIN.csv", header=None

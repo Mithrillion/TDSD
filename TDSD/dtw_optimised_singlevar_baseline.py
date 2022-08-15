@@ -1,3 +1,6 @@
+# this script evaluates the baseline performance (accuracy and f1) of dtaidistance's implementation
+# of DTW for 1NN classification on the UCR Archive, using optimal warping window sizes from the UCR Archive metadata
+
 import os
 import numpy as np
 import pandas as pd
@@ -11,9 +14,6 @@ from sklearn.preprocessing import LabelEncoder
 
 from scipy.io import arff
 
-# config:
-use_opt_window = True
-
 if __name__ == "__main__":
 
     DATASET_ROOT = "data/Univariate_arff"
@@ -26,8 +26,7 @@ if __name__ == "__main__":
         ]
     )
 
-    if use_opt_window:
-        windows = pd.read_csv("data/opt_windows.csv").set_index("Name")
+    windows = pd.read_csv("data/opt_windows.csv").set_index("Name")
 
     results_dict = dict()
     for dataset_name in tqdm(sorted(dataset_list)):
@@ -46,11 +45,7 @@ if __name__ == "__main__":
         X_train_tensor = torch.tensor(X_train).float().contiguous()
         X_test_tensor = torch.tensor(X_test).float().contiguous()
 
-        if use_opt_window:
-            window = windows.loc[dataset_name, "window"] + 1
-        else:
-            window = None
-        # evaluate with DTW
+        window = windows.loc[dataset_name, "window"] + 1
         combined = np.concatenate([X_test, X_train], axis=0)
         cross_dtw = dtw.distance_matrix_fast(
             combined,
@@ -67,9 +62,6 @@ if __name__ == "__main__":
         results_dict[dataset_name] = results
 
     res = pd.DataFrame.from_dict(results_dict).T.reset_index()
-    res.columns = ["dataset", "Reproduced DTW_learned", "Reproduced DTW_learned F1"]
+    res.columns = ["dataset", "DTW_learned", "DTW_learned F1"]
 
-    if use_opt_window:
-        res.to_csv("results/dtw_opt_singlevar_baseline.csv")
-    else:
-        res.to_csv("results/dtw_full_singlevar_baseline.csv")
+    res.to_csv("results/dtw_opt_singlevar_baseline.csv")

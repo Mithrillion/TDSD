@@ -35,7 +35,9 @@ The SITS dataset can be downloaded at http://bit.ly/SDM201. The files should be 
 
 `artificial_long_data.py` - generates `.ts` format files of sample and length-duplicated datasets for run time testing with `Tempo`.
 
-`dtw_optimised_singlevar_baseline.py` - evaluates Euclidean distance and `dtaidistance` DTW performance baselines.
+`ed_dtw_singlevar_baseline.py` - evaluates Euclidean distance and `dtaidistance` DTW performance baselines.
+
+`dtw_optimised_singlevar_baseline.py` - evaluates `dtaidistance` DTW performance, using optimal warping window sizes provided by UCR Archive.
 
 `performance_comparison.py` - Run time comparison of `dtaidistance` against `TDPCA-SigDist`, with pre-computed `Tempo` times.
 
